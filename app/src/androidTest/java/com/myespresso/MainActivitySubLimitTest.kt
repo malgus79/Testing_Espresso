@@ -104,11 +104,13 @@ class MainActivitySubLimitTest {
     ): Matcher<View> {
 
         return object : TypeSafeMatcher<View>() {
+            //buscar por descripcion
             override fun describeTo(description: Description) {
                 description.appendText("Child at position $position in parent ")
                 parentMatcher.describeTo(description)
             }
 
+            //validar que el padre sea valido y que coincida el que tenga un hijo en la posicion indicada
             public override fun matchesSafely(view: View): Boolean {
                 val parent = view.parent
                 return parent is ViewGroup && parentMatcher.matches(parent)
