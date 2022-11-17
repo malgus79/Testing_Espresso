@@ -2,6 +2,7 @@ package com.myespresso
 
 import androidx.lifecycle.Lifecycle
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.withId
@@ -53,5 +54,18 @@ class MainActivityTest{
 
         onView(withId(R.id.etNewQuantity))
             .check(matches(withText("1")))  //como ya se limito la cantidad -> deberia seguir mostrando "1"
+    }
+
+    //test: reemplazar texto
+    @Test
+    fun setNewQuantity_sub_increasesTextField(){
+        onView(withId(R.id.etNewQuantity))
+            .perform(ViewActions.replaceText("11"))  //simular que ponemos el numero "11" de forma manual en el campo cantidad
+
+        onView(withId(R.id.ibSub))
+            .perform(click())
+
+        onView(withId(R.id.etNewQuantity))
+            .check(matches(withText("10")))
     }
 }
