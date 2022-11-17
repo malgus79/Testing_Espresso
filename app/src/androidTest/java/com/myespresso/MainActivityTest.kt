@@ -58,7 +58,7 @@ class MainActivityTest{
 
     //test: reemplazar texto
     @Test
-    fun setNewQuantity_sub_increasesTextField(){
+    fun setNewQuantity_sub_reducesTextField(){
         onView(withId(R.id.etNewQuantity))
             .perform(ViewActions.replaceText("11"))  //simular que ponemos el numero "11" de forma manual en el campo cantidad
 
@@ -67,5 +67,18 @@ class MainActivityTest{
 
         onView(withId(R.id.etNewQuantity))
             .check(matches(withText("10")))
+    }
+
+    //test: teniendo el valor "1" en cantidad, no se pueda disminuir el valor
+    @Test
+    fun setNewQuantity_subLimit_noReducesTextField(){
+        onView(withId(R.id.etNewQuantity))
+            .check(matches(withText("1")))
+
+        onView(withId(R.id.ibSub))
+            .perform(click())
+
+        onView(withId(R.id.etNewQuantity))
+            .check(matches(withText("1")))
     }
 }
