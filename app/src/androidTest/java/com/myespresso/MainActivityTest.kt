@@ -1,5 +1,6 @@
 package com.myespresso
 
+import androidx.lifecycle.Lifecycle
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -33,5 +34,24 @@ class MainActivityTest{
         //nueva cantidad = 2
         onView(withId(R.id.etNewQuantity))
             .check(matches(withText("2")))
+    }
+
+    //test: que no se pueda incrementar mas la cantidad al llegar al limite disponible
+    @Test
+    fun setNewQuantity_sumLimit_noIncreasesTextField(){
+        val scenario = activityRule.scenario
+        scenario.moveToState(Lifecycle.State.RESUMED)
+        scenario.onActivity { activity ->
+            activity.selectedProduct.quantity = 1  //limitar cantidad para agregar/disminuir cantidad
+        }
+
+        onView(withId(R.id.etNewQuantity))
+            .check(matches(withText("1")))
+
+        onView(withId(R.id.ibSum))
+            .perform(click())
+
+        onView(withId(R.id.etNewQuantity))
+            .check(matches(withText("1")))  //como ya se limito la cantidad -> deberia seguir mostrando "1"
     }
 }
